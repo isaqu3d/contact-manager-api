@@ -1,21 +1,25 @@
-import { apiReference } from "@scalar/express-api-reference";
-import express from "express";
-import swaggerSpec from "./config/swagger.js";
+import express from 'express';
+import { apiReference } from '@scalar/express-api-reference';
+import { swaggerSpec } from './config/swagger.js';
+import { contatosRouter } from './routes/contatos.routes.js';
+import { errorHandler } from './middlewares/error.middleware.js';
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
-app.get("/openapi.json", (_req, res) => {
+app.use('/contatos', contatosRouter);
+
+app.get('/openapi.json', (_req, res) => {
   res.json(swaggerSpec);
 });
 
 app.use(
-  "/docs",
+  '/docs',
   apiReference({
-    url: "/openapi.json",
-    theme: "purple",
+    url: '/openapi.json',
+    theme: 'purple',
   }),
 );
 
-export default app;
+app.use(errorHandler);
