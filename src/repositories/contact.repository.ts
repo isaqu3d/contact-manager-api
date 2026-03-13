@@ -7,6 +7,9 @@ export const findAll = () =>
 export const findById = (id: number) =>
   prisma.contact.findUnique({ where: { id } });
 
+export const findByTelefone = (telefone: string) =>
+  prisma.contact.findUnique({ where: { telefone } });
+
 export const create = (data: CreateContactDTO) =>
   prisma.contact.create({ data });
 
