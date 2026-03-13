@@ -12,28 +12,28 @@ API REST para gerenciamento de contatos com nome e telefone.
 
 ---
 
-## 🚀 About
+# 🚀 About
 
 API para gerenciar uma lista de contatos, permitindo criação, listagem, atualização e exclusão de contatos com validações de nome e telefone.
 
 ---
 
-## 🛠 Technologies
+# 🛠 Technologies
 
-| Technology | Purpose |
-|---|---|
-| **Node.js 24** | Runtime (ES Modules) |
-| **TypeScript 5.9** | Type-safe development |
-| **Express 5** | HTTP framework |
-| **Prisma 7** | ORM with MySQL (MariaDB driver adapter) |
-| **MySQL 8** | Relational database |
-| **Zod v4** | Schema validation |
-| **Docker** | Local MySQL via docker-compose |
-| **Scalar** | Interactive API documentation UI |
+| Technology         | Purpose                          |
+| ------------------ | -------------------------------- |
+| **Node.js 24**     | Runtime (ES Modules)             |
+| **TypeScript 5.9** | Type-safe development            |
+| **Express 5**      | HTTP framework                   |
+| **Prisma 7**       | ORM with MySQL                   |
+| **MySQL 8**        | Relational database              |
+| **Zod v4**         | Schema validation                |
+| **Docker**         | Local MySQL via docker-compose   |
+| **Scalar**         | Interactive API documentation UI |
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```
 contact-manager-api/
@@ -74,121 +74,197 @@ Request → Express Route → Validation Middleware → Controller → Service �
 
 ---
 
-## 🗄️ Database
+# 🗄️ Database
 
 ```
 ┌─────────────────────────────┐
 │          contacts            │
 ├─────────────────────────────┤
-│ id         (PK, autoincrement) │
-│ nome       (string)            │
-│ telefone   (string, unique)    │
-│ createdAt  (datetime)          │
-│ updatedAt  (datetime)          │
+│ id         (PK, autoincrement)
+│ nome       (string)
+│ telefone   (string, unique)
+│ createdAt  (datetime)
+│ updatedAt  (datetime)
 └─────────────────────────────┘
 ```
 
 ---
 
-## ⚙️ How to Run
+# ⚙️ How to Run
 
-### Prerequisites
+## Prerequisites
 
 - Node.js 18+
 - npm
 - Docker
 
-### 1. Clone the repository
+---
 
-```sh
+## 1. Clone the repository
+
+```bash
 git clone git@github.com:isaqu3d/contact-manager-api.git
 cd contact-manager-api
 ```
 
-### 2. Install dependencies
+---
 
-```sh
+## 2. Install dependencies
+
+```bash
 npm install
 ```
 
-### 3. Set up environment variables
+---
 
-```sh
+## 3. Set up environment variables
+
+```bash
 cp .env.example .env
 ```
 
-Edit `.env` and fill in the required values:
+Edit `.env`:
 
 ```env
 DATABASE_URL="mysql://root:root@localhost:3306/contact_manager"
 PORT=3000
 ```
 
-### 4. Start the database
+---
 
-```sh
+## 4. Start the database
+
+```bash
 docker compose up -d
 ```
 
-### 5. Run database migrations
+---
 
-```sh
+## 5. Run database migrations
+
+```bash
 npx prisma migrate dev
 ```
 
-### 6. Start the development server
+---
 
-```sh
+## 6. Generate Prisma Client (if necessary)
+
+If you encounter issues starting the server:
+
+```bash
+npx prisma generate
+```
+
+---
+
+## 7. Start the development server
+
+```bash
 npm run dev
 ```
 
-The API will be available at `http://localhost:3000`.
-Interactive API docs (Scalar) will be at `http://localhost:3000/docs`.
+The API will be available at:
+
+```
+http://localhost:3000
+```
 
 ---
 
-## 📖 API Endpoints
+# 📚 API Documentation
 
-| Method | Route | Description | Status |
-|--------|-------|-------------|--------|
-| `POST` | `/contatos` | Create a new contact | `201` |
-| `GET` | `/contatos` | List all contacts | `200` |
-| `GET` | `/contatos/:id` | Get contact by ID | `200` |
-| `PATCH` | `/contatos/:id` | Update an existing contact | `200` |
-| `DELETE` | `/contatos/:id` | Delete a contact | `204` |
+The API provides interactive documentation based on the **OpenAPI Specification**.
 
-### Validations
+The documentation interface is rendered using **Scalar**, a modern alternative to Swagger UI.
 
-- **nome**: at least two words, each with at least 3 characters
-- **telefone**: format `(XX) XXXXX-XXXX` or `(XX) XXXX-XXXX`, must be unique
+With this interface you can:
 
-### Error Responses
+- explore all available endpoints
+- see request parameters
+- view response schemas
+- execute requests directly in the browser
 
-| Status | Description |
-|--------|-------------|
-| `400` | Validation error (invalid name, phone format, etc.) |
-| `404` | Contact not found |
-| `409` | Phone number already exists |
-| `500` | Internal server error |
+After starting the server, access the documentation at:
 
----
+```
+http://localhost:3000/docs
+```
 
-## 📝 Available Scripts
+From this interface you can interact with endpoints such as:
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start dev server with hot reload |
-| `npm run build` | Compile TypeScript |
-| `npm start` | Start compiled server |
-| `npm run db:migrate` | Run database migrations |
-| `npm run db:generate` | Generate Prisma client |
-| `npm run db:studio` | Open Prisma Studio |
-| `npm run db:push` | Push schema to database |
+- `POST /contatos`
+- `GET /contatos`
+- `GET /contatos/:id`
+- `PATCH /contatos/:id`
+- `DELETE /contatos/:id`
 
 ---
 
-## 📝 License
+# 📖 API Endpoints
 
-[MIT License](LICENSE)
+| Method | Route           | Description                | Status |
+| ------ | --------------- | -------------------------- | ------ |
+| POST   | `/contatos`     | Create a new contact       | 201    |
+| GET    | `/contatos`     | List all contacts          | 200    |
+| GET    | `/contatos/:id` | Get contact by ID          | 200    |
+| PATCH  | `/contatos/:id` | Update an existing contact | 200    |
+| DELETE | `/contatos/:id` | Delete a contact           | 204    |
 
-Made by [Isaque de Sousa](https://github.com/isaqu3d)
+---
+
+# ✔ Validations
+
+### nome
+
+- must contain **at least two words**
+- each word must contain **at least 3 characters**
+
+### telefone
+
+Accepted formats:
+
+```
+(XX) XXXXX-XXXX
+(XX) XXXX-XXXX
+```
+
+- must be **unique**
+
+---
+
+# ⚠ Error Responses
+
+| Status | Description                 |
+| ------ | --------------------------- |
+| 400    | Validation error            |
+| 404    | Contact not found           |
+| 409    | Phone number already exists |
+| 500    | Internal server error       |
+
+---
+
+# 📝 Available Scripts
+
+| Command               | Description                      |
+| --------------------- | -------------------------------- |
+| `npm run dev`         | Start dev server with hot reload |
+| `npm run build`       | Compile TypeScript               |
+| `npm start`           | Start compiled server            |
+| `npm run db:migrate`  | Run database migrations          |
+| `npm run db:generate` | Generate Prisma client           |
+| `npm run db:studio`   | Open Prisma Studio               |
+| `npm run db:push`     | Push schema to database          |
+
+---
+
+# 📝 License
+
+MIT License
+
+---
+
+Made by **Isaque de Sousa**
+
+GitHub  
+https://github.com/isaqu3d
