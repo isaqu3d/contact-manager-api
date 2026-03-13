@@ -10,10 +10,18 @@ export const findById = async (id: number) => {
   return contact;
 };
 
-export const create = (data: CreateContactDTO) => contactRepository.create(data);
+export const create = async (data: CreateContactDTO) => {
+  const existing = await contactRepository.findByTelefone(data.telefone);
+  if (existing) throw new AppError(409, 'Já existe um contato com este telefone.');
+  return contactRepository.create(data);
+};
 
 export const update = async (id: number, data: UpdateContactDTO) => {
   await findById(id);
+  if (data.telefone) {
+    const existing = await contactRepository.findByTelefone(data.telefone);
+    if (existing && existing.id !== id) throw new AppError(409, 'Já existe um contato com este telefone.');
+  }
   return contactRepository.update(id, data);
 };
 
